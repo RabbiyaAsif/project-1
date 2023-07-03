@@ -1,0 +1,44 @@
+launch ec2 instance
+sudo apt-get update
+sudo apt-get install nginx
+systemctl status nginx
+to restart nginx
+sudo systemctl restart nginx 
+nginx serve whatever we have in the folder /var/www/html
+cd /var/www/html
+ls
+cat file name // it will show the content of nginx page
+cd /etc/nginx/ // we will get all nginx configuration files here ( in site enable config deploy and in site available config does not depoy
+cd /var/www/html
+sudo vim index.html // now deploy the code on nginx by public ip of instance
+git clone https://github.com/LondheShubham153/django-notes-app.git
+sudo apt-get install docker.io
+sudo usermod -aG docker $USER // $USER denotes current logged in user
+sudo reboot
+Build the app:
+docker build -t notes-app .
+docker run -d -p 8000:8000 notes-app:latest
+docker ps
+curl -L http://127.0.0.1:800 // to check our app is working on local host
+Now to run the code through reverse proxy: On nginx server:
+cd /etc/nginx/sites-enabled/
+sudo vim default // in this file we have to add configuration 
+location / {
+proxy_passs http://127.0.0.1:8000;
+} // it means whatever is running on local host will be shown to outsiders
+sudo systemctl restart nginx
+cd django-notes-app
+cd build/
+cd static/ // containng front ed code 
+ls
+sudo cp -r * /var/www/html
+to connect with backend:
+cd /etc/nginx/sites-enabled/
+sudo vim default // in this file we have to add configuration 
+location /api {
+proxy_pass http://127.0.0.1:8000/api;
+}
+sudo systemctl restart nginx
+
+
+
